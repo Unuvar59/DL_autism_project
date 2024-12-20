@@ -30,7 +30,7 @@ class ImageLabelingApp:
         self.happy_button = Button(self.buttons_frame, text="😊 Happy", command=lambda: self.save_label(0))
         self.happy_button.pack(side="left")
 
-        self.sad_button = Button(self.buttons_frame, text="😢 Sad", command=lambda: self.save_label(1))
+        self.sad_button = Button(self.buttons_frame, text="🙢 Sad", command=lambda: self.save_label(1))
         self.sad_button.pack(side="left")
 
         self.angry_button = Button(self.buttons_frame, text="😠 Angry", command=lambda: self.save_label(2))
@@ -41,6 +41,9 @@ class ImageLabelingApp:
 
         self.neutral_button = Button(self.buttons_frame, text="😐 Neutral", command=lambda: self.save_label(4))
         self.neutral_button.pack(side="left")
+
+        self.remove_button = Button(self.buttons_frame, text="🗑️ Remove", command=self.remove_image)
+        self.remove_button.pack(side="left")
 
         self.quit_button = Button(self.buttons_frame, text="🚪 Quit", command=self.quit_app)
         self.quit_button.pack(side="left")
@@ -79,6 +82,27 @@ class ImageLabelingApp:
         
         self.current_index += 1
         self.load_image()
+    
+    def remove_image(self):
+        """Removes the current image from the dataset and CSV file."""
+        if self.current_image_path:
+            # Delete image file
+            os.remove(self.current_image_path)
+            print(f"{os.path.basename(self.current_image_path)} removed from dataset.")
+            
+            # Remove from CSV if it exists
+            if os.path.exists(self.csv_file):
+                with open(self.csv_file, 'r') as file:
+                    rows = [row for row in csv.reader(file) if row[0] != os.path.basename(self.current_image_path)]
+                with open(self.csv_file, 'w', newline='') as file:
+                    writer = csv.writer(file)
+                    writer.writerows(rows)
+                print(f"{os.path.basename(self.current_image_path)} removed from CSV.")
+            
+            # Remove from image list and load the next image
+            self.image_files.pop(self.current_index)
+        
+        self.load_image()
 
     def show_message(self, message):
         """Displays a message."""
@@ -90,17 +114,16 @@ class ImageLabelingApp:
         self.master.quit()
 
 
-# # Start the program for ASD
-# if __name__ == "__main__":
-#     root = tk.Tk()
-#     image_folder = "FADC-Dataset/ASD/"  # Folder containing images
-#     app = ImageLabelingApp(root, image_folder,csv_file='image_labels_asd.csv')
-#     root.mainloop()
-
-# Start the program for TD
+# Start the program for ASD
 if __name__ == "__main__":
     root = tk.Tk()
-    image_folder = "FADC-Dataset/TD/"  # Folder containing images
-    app = ImageLabelingApp(root, image_folder,csv_file='image_labels_td.csv')
+    image_folder = "FADC-Dataset/ASD/"  # Folder containing images
+    app = ImageLabelingApp(root, image_folder, csv_file='image_labels_asd.csv')
     root.mainloop()
 
+# Start the program for TD
+# if __name__ == "__main__":
+#     root = tk.Tk()
+#     image_folder = "FADC-Dataset/TD/"  # Folder containing images
+#     app = ImageLabelingApp(root, image_folder, csv_file='image_labels_td.csv')
+#     root.mainloop()
