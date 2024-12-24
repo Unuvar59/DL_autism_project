@@ -115,15 +115,15 @@ class ImageLabelingApp:
 
 
 # # # Start the program for ASD
-# if __name__ == "__main__":
-#     root = tk.Tk()
-#     image_folder = "FADC-Dataset/ASD/"  # Folder containing images
-#     app = ImageLabelingApp(root, image_folder, csv_file='image_labels_asd.csv')
-#     root.mainloop()
-
-# Start the program for TD
 if __name__ == "__main__":
     root = tk.Tk()
-    image_folder = "FADC-Dataset/TD/"  # Folder containing images
-    app = ImageLabelingApp(root, image_folder, csv_file='image_labels_td.csv')
+    image_folder = "FADC-Dataset/ASD/"  # Folder containing images
+    app = ImageLabelingApp(root, image_folder, csv_file='image_labels_asd.csv')
     root.mainloop()
+
+# Start the program for TD
+# if __name__ == "__main__":
+#     root = tk.Tk()
+#     image_folder = "FADC-Dataset/TD/"  # Folder containing images
+#     app = ImageLabelingApp(root, image_folder, csv_file='image_labels_td.csv')
+#     root.mainloop()
